@@ -28,6 +28,7 @@ class Director:
         self.puzzle = Puzzle()
         self.wrong_guess = 0
         self.masked_word = []
+        self.outcome = None
         
     def start_game(self):
         """Starts the game loop to control the sequence of play.
@@ -48,7 +49,7 @@ class Director:
             self (Director): An instance of Director.
         """
 
-        record_guess = self.console.read_number("Guess a letter [a-z]: ")
+        record_guess = self.jumper.make_guess()
         self.puzzle.record_guess(record_guess)
         
     def do_updates(self):
@@ -69,9 +70,8 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        parachute_1 = self.jumper.midgame_avatar()
-        self.console.write(parachute_1)
+        self.jumper.midgame_avatar(wrong_guess)
         self.console.write(self.masked_word)
-        self.keep_playing = (self.jumper.distance[-1] != 0)
+        self.keep_playing = (self.outcome == None)
 
 
