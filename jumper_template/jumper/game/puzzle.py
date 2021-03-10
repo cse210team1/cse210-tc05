@@ -5,8 +5,11 @@ class Puzzle:
 
     def __init__(self):
 
-        word = random.choice(["fish", "beans", "dog", "cat"])
-        self.word = list(word)
+        worded = random.choice(["fish", "beans", "dog", "cat"])
+        self.word = []
+        for letter in worded:
+            self.word.append(letter)
+
         self.guesses = []
         self.masked_word = []
 
@@ -26,21 +29,25 @@ class Puzzle:
                 self.masked_word.append("-")
         return self.masked_word
 
-    def is_solved(self):
+    #def is_solved(self):
 
-        if self.masked_word == self.word:
-            return True 
-        else:
-            return False
+       # if self.masked_word == self.word:
+        #    return True 
+        #else:
+         #   return False
 
     def in_word(self, guess):
 
-        if guess in self.guesses:
-            return True
-        else:
-            return False
+        for letter in self.word:
+            if letter == guess:
+                return True
+            else:
+                return False
 
     def outcome(self, wrong, masked_word):
         if wrong >= 4:
             return False
-        elif masked_word == 
+        elif masked_word == self.word:
+            return True
+        else: 
+            return None
