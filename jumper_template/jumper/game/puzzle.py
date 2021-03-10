@@ -5,7 +5,8 @@ class Puzzle:
 
     def __init__(self):
 
-        self.word = random.choice(["fish", "beans", "dog", "cat"])
+        word = random.choice(["fish", "beans", "dog", "cat"])
+        self.word = list(word)
         self.guesses = []
         self.masked_word = []
 
@@ -22,7 +23,7 @@ class Puzzle:
             if letter in self.guesses:
                 self.masked_word.append(letter)
             else:
-                self.masked_word.append(-)
+                self.masked_word.append("-")
         return self.masked_word
 
     def is_solved(self):
@@ -38,3 +39,8 @@ class Puzzle:
             return True
         else:
             return False
+
+    def outcome(self, wrong, masked_word):
+        if wrong >= 4:
+            return False
+        elif masked_word == 
