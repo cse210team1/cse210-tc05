@@ -1,4 +1,4 @@
-from console import Console
+from game.console import Console
 
 class Jumper():
     def __init__(self):
