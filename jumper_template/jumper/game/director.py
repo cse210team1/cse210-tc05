@@ -23,12 +23,13 @@ class Director:
             self (Director): an instance of Director.
         """
         self.console = Console()
-        self.jumper = jumper()
+        self.jumper = Jumper()
         self.keep_playing = True
         self.puzzle = Puzzle()
         self.wrong_guess = 0
         self.masked_word = []
         self.outcome = None
+        self.last_guess = None
         
     def start_game(self):
         """Starts the game loop to control the sequence of play.
@@ -49,8 +50,8 @@ class Director:
             self (Director): An instance of Director.
         """
 
-        record_guess = self.jumper.make_guess()
-        self.puzzle.record_guess(record_guess)
+        self.last_guess = self.jumper.make_guess()
+        self.puzzle.record_guess(self.last_guess)
         
     def do_updates(self):
         """Updates the important game information for each round of play. In 
@@ -60,9 +61,10 @@ class Director:
             self (Director): An instance of Director.
         """
        
-        self.masked_word = self.puzzle.mask_word
-        if self.puzzle.in_word() == False:
-            self.wrong_guess =+ 1
+        self.masked_word = self.puzzle.mask_word()
+        print(self.wrong_guess)
+        if self.puzzle.in_word(self.last_guess) == False:
+            self.wrong_guess += 1
     def do_outputs(self):
         """Outputs the important game information for each round of play. In 
         this case, that means the rabbit provides a hint.
@@ -70,8 +72,11 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        self.jumper.midgame_avatar(wrong_guess)
+        self.jumper.midgame_avatar(self.wrong_guess)
         self.console.write(self.masked_word)
-        self.keep_playing = (self.outcome == None)
 
+        self.keep_playing = (self.puzzle.outcome(self.wrong_guess, self.masked_word) == None)
+        if self.keep_playing == False:
+            self.jumper.endgame_avatar(self.puzzle.outcome(self.wrong_guess, self.masked_word))
+        self.masked_word.clear()
 
